@@ -1,6 +1,7 @@
 from django import forms
 from .models import Study
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
 
 class StudyForm(forms.ModelForm):
 
@@ -33,3 +34,29 @@ class StudyForm(forms.ModelForm):
             )
 
         return content
+
+class SignupForm(UserCreationForm):
+    username = forms.CharField(
+        error_messages={
+            "required": "ユーザー名を入力してください。",
+            "unique": "このユーザー名は既に使用されています。",
+        }
+    )
+
+    password1 = forms.CharField(
+        label="パスワード",
+        widget=forms.PasswordInput,
+        help_text="""
+        8文字以上で設定してください。
+        数字だけのパスワードや、よく使われるパスワードは使用できません。
+        """,
+    )
+
+    password2 = forms.CharField(
+        label="パスワード確認",
+        widget=forms.PasswordInput,
+        help_text="確認のため、同じパスワードをもう一度入力してください。",
+        error_messages={
+                        "required": "確認用パスワードを入力してください。",
+                        }
+    )   

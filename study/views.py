@@ -1,12 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Study
 from .forms import StudyForm
-from django.shortcuts import render, redirect, get_object_or_404
+from .forms import SignupForm
 
 def index(request):
     return HttpResponse("StudyStack")
@@ -15,7 +14,7 @@ def signup(request):
     if request.method == "POST":
 
         #登録ボタンを押した
-        form =UserCreationForm(request.POST)
+        form =SignupForm(request.POST)
 
         if form.is_valid():
             form.save()
@@ -23,7 +22,7 @@ def signup(request):
     else:
 
         #最初に登録画面を開いたとき
-        form = UserCreationForm()
+        form = SignupForm()
 
     return render(request, "study/signup.html", {"form": form})
 
