@@ -467,6 +467,9 @@
                         placeholder="今日は何を学んだ？"
                     >
 
+                    {{ form.tags }}
+                    {{ form.tags.errors }}
+
                     <button
                         class="add-button"
                         type="submit"
@@ -495,6 +498,12 @@
                     <p class="study-content">
                         {{ study.content }}
                     </p>
+                    <p>
+                        {% for tag in study.tags.all %}
+                            {{ tag }}
+                        {% endfor %} 
+                    </p>
+
 
                     <div class="study-actions">
 

@@ -57,6 +57,7 @@ def dashboard(request):
             study = form.save(commit=False)
             study.user = request.user
             study.save()
+            form.save_m2m()
 
             return redirect("dashboard")
 

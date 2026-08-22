@@ -13,7 +13,7 @@ class StudyForm(forms.ModelForm):
 
     class Meta:
         model = Study
-        fields = ["content"]
+        fields = ["content","tags"]
 
     def clean_content(self):
         content = self.cleaned_data["content"]
@@ -34,6 +34,15 @@ class StudyForm(forms.ModelForm):
             )
 
         return content
+
+    def clean_tags(self):
+        tags = self.cleaned_data["tags"]
+        if len(tags) > 2:
+            raise ValidationError(
+                "タグは2つまで選択できます。"
+            )
+        
+        return tags
 
 class SignupForm(UserCreationForm):
     username = forms.CharField(
