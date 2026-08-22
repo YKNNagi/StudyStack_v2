@@ -38,7 +38,7 @@
 
         .dashboard-container {
             width: 100%;
-            max-width: 820px;
+            max-width: 860px;
 
             margin: 0 auto;
             padding: 50px 24px 70px;
@@ -46,7 +46,10 @@
             animation: fadeUp 0.7s ease-out;
         }
 
-        /* ヘッダー */
+        /* =========================
+           ヘッダー
+        ========================= */
+
         .page-header {
             text-align: center;
             margin-bottom: 34px;
@@ -54,7 +57,6 @@
 
         .rabbit {
             display: inline-block;
-
             margin-bottom: 6px;
 
             font-size: 36px;
@@ -77,7 +79,10 @@
             font-size: 13px;
         }
 
-        /* ログアウト */
+        /* =========================
+           ログアウト
+        ========================= */
+
         .logout-form {
             margin-top: 18px;
         }
@@ -105,26 +110,28 @@
                 background 0.2s ease,
                 color 0.2s ease,
                 box-shadow 0.2s ease;
-            }
+        }
 
         .logout-button:hover {
             color: #a76f85;
-
             background: #fff3f6;
 
             transform: translateY(-2px);
 
             box-shadow:
                 0 8px 18px rgba(170, 125, 150, 0.16);
-            }
+        }
 
         .logout-button:active {
             transform: scale(0.97);
-            }
+        }
 
-        /* 共通カード */
+        /* =========================
+           共通カード
+        ========================= */
+
         .card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
 
             border: 1px solid rgba(235, 215, 225, 0.85);
             border-radius: 22px;
@@ -135,14 +142,17 @@
             backdrop-filter: blur(8px);
         }
 
-        /* 新規登録 */
+        /* =========================
+           新規登録
+        ========================= */
+
         .create-card {
             margin-bottom: 36px;
             padding: 26px 28px;
         }
 
         .section-title {
-            margin: 0 0 18px;
+            margin: 0 0 20px;
 
             color: #817487;
             font-size: 17px;
@@ -150,19 +160,32 @@
         }
 
         .create-form {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(150px, 190px)
+                auto;
+
+            gap: 12px;
+            align-items: start;
         }
 
-        .create-form label {
-            display: none;
-        }
-
-        .create-form input {
-            flex: 1;
-
+        .field-group {
             min-width: 0;
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 7px;
+
+            color: #8c808f;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .content-input {
+            width: 100%;
+
             padding: 12px 14px;
 
             color: #625d68;
@@ -181,7 +204,7 @@
                 transform 0.2s ease;
         }
 
-        .create-form input:focus {
+        .content-input:focus {
             border-color: #d7b7c9;
 
             box-shadow:
@@ -190,9 +213,63 @@
             transform: translateY(-1px);
         }
 
+        /* =========================
+           タグ選択
+        ========================= */
+
+        .tag-select-wrapper select {
+            width: 100%;
+            min-height: 96px;
+
+            padding: 9px 10px;
+
+            color: #665e69;
+            font-size: 13px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #fffefe,
+                    #fff8fb
+                );
+
+            border: 1px solid #e4d7e3;
+            border-radius: 13px;
+
+            outline: none;
+
+            box-shadow:
+                inset 0 1px 3px rgba(145, 115, 140, 0.05);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .tag-select-wrapper select:focus {
+            border-color: #ccb5dd;
+
+            box-shadow:
+                0 0 0 4px rgba(203, 185, 229, 0.18);
+        }
+
+        .tag-help {
+            margin: 7px 2px 0;
+
+            color: #b0a4b2;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           登録ボタン
+        ========================= */
+
         .add-button {
+            align-self: end;
             flex-shrink: 0;
 
+            min-height: 45px;
             padding: 12px 20px;
 
             color: white;
@@ -230,7 +307,10 @@
             transform: scale(0.98);
         }
 
-        /* エラー */
+        /* =========================
+           エラー
+        ========================= */
+
         .form-error {
             margin-top: 12px;
 
@@ -249,14 +329,21 @@
             padding: 9px 14px 9px 30px;
         }
 
-        /* 学習記録 */
+        .tag-error {
+            margin-top: 8px;
+        }
+
+        /* =========================
+           学習記録一覧
+        ========================= */
+
         .study-list {
             display: grid;
             gap: 16px;
         }
 
         .study-card {
-            padding: 20px 22px;
+            padding: 22px 24px;
 
             transition:
                 transform 0.2s ease,
@@ -271,12 +358,72 @@
         }
 
         .study-content {
-            margin: 0 0 16px;
+            margin: 0;
 
             color: #665e69;
             font-size: 15px;
             line-height: 1.7;
         }
+
+        /* =========================
+           タグチップ
+        ========================= */
+
+        .study-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+
+            margin: 14px 0 17px;
+        }
+
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 6px 11px;
+
+            color: #7d7085;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff0f5,
+                    #f1edff
+                );
+
+            border: 1px solid rgba(220, 196, 220, 0.7);
+            border-radius: 999px;
+
+            box-shadow:
+                0 3px 8px rgba(145, 115, 145, 0.07);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .tag-chip::before {
+            content: "#";
+            margin-right: 4px;
+
+            color: #c99aad;
+            font-weight: 700;
+        }
+
+        .tag-chip:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 5px 11px rgba(145, 115, 145, 0.12);
+        }
+
+        /* =========================
+           編集・削除
+        ========================= */
 
         .study-actions {
             display: flex;
@@ -284,7 +431,6 @@
             align-items: center;
         }
 
-        /* 編集 */
         .edit-link {
             display: inline-block;
 
@@ -309,7 +455,6 @@
             background: #e9e2f8;
         }
 
-        /* 削除 */
         .delete-form {
             margin: 0;
         }
@@ -338,7 +483,10 @@
             background: #ffe4e9;
         }
 
-        /* 空データ */
+        /* =========================
+           空データ
+        ========================= */
+
         .empty-card {
             padding: 34px;
             text-align: center;
@@ -359,7 +507,10 @@
             font-size: 14px;
         }
 
-        /* アニメーション */
+        /* =========================
+           アニメーション
+        ========================= */
+
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -373,7 +524,8 @@
         }
 
         @keyframes rabbitFloat {
-            0%, 100% {
+            0%,
+            100% {
                 transform: translateY(0);
             }
 
@@ -394,7 +546,11 @@
             }
         }
 
-        @media (max-width: 600px) {
+        /* =========================
+           スマホ
+        ========================= */
+
+        @media (max-width: 700px) {
             .dashboard-container {
                 padding: 32px 16px 50px;
             }
@@ -404,12 +560,15 @@
             }
 
             .create-form {
-                flex-direction: column;
-                align-items: stretch;
+                grid-template-columns: 1fr;
             }
 
             .add-button {
                 width: 100%;
+            }
+
+            .tag-select-wrapper select {
+                min-height: 90px;
             }
 
             .study-card {
@@ -424,31 +583,41 @@
     <main class="dashboard-container">
 
         <header class="page-header">
-    <div class="rabbit">🐇</div>
 
-    <h1>{{ user.username }}の学習ページ</h1>
+            <div class="rabbit">
+                🐇
+            </div>
 
-    <p class="subtitle">
-        今日の学びを、ひとつずつ積み重ねよう。
-    </p>
+            <h1>
+                {{ user.username }}の学習ページ
+            </h1>
 
-    <form
-        class="logout-form"
-        action="{% url 'logout' %}"
-        method="POST"
-    >
-        {% csrf_token %}
+            <p class="subtitle">
+                今日の学びを、ひとつずつ積み重ねよう。
+            </p>
 
-        <button
-            class="logout-button"
-            type="submit"
-        >
-            ログアウト
-        </button>
-    </form>
-</header>
+            <form
+                class="logout-form"
+                action="{% url 'logout' %}"
+                method="POST"
+            >
+                {% csrf_token %}
 
-        <!-- 新規登録 -->
+                <button
+                    class="logout-button"
+                    type="submit"
+                >
+                    ログアウト
+                </button>
+            </form>
+
+        </header>
+
+
+        <!-- =========================
+             新規登録
+        ========================== -->
+
         <section class="card create-card">
 
             <h2 class="section-title">
@@ -459,16 +628,51 @@
                 {% csrf_token %}
 
                 <div class="create-form">
-                    <label>学習内容</label>
 
-                    <input
-                        type="text"
-                        name="content"
-                        placeholder="今日は何を学んだ？"
-                    >
+                    <div class="field-group">
 
-                    {{ form.tags }}
-                    {{ form.tags.errors }}
+                        <label
+                            class="field-label"
+                            for="id_content"
+                        >
+                            学習内容
+                        </label>
+
+                        <input
+                            class="content-input"
+                            id="id_content"
+                            type="text"
+                            name="content"
+                            placeholder="今日は何を学んだ？"
+                            value="{{ form.content.value|default_if_none:'' }}"
+                        >
+
+                    </div>
+
+
+                    <div class="field-group tag-select-wrapper">
+
+                        <label
+                            class="field-label"
+                            for="{{ form.tags.id_for_label }}"
+                        >
+                            タグ
+                        </label>
+
+                        {{ form.tags }}
+
+                        <p class="tag-help">
+                            Ctrlキーを押しながら最大2つまで選べます。
+                        </p>
+
+                        {% if form.tags.errors %}
+                            <div class="form-error tag-error">
+                                {{ form.tags.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
 
                     <button
                         class="add-button"
@@ -476,7 +680,9 @@
                     >
                         登録する
                     </button>
+
                 </div>
+
 
                 {% if form.content.errors %}
                     <div class="form-error">
@@ -488,7 +694,11 @@
 
         </section>
 
-        <!-- 学習記録一覧 -->
+
+        <!-- =========================
+             学習記録一覧
+        ========================== -->
+
         <section class="study-list">
 
             {% for study in studies %}
@@ -498,11 +708,23 @@
                     <p class="study-content">
                         {{ study.content }}
                     </p>
-                    <p>
-                        {% for tag in study.tags.all %}
-                            {{ tag }}
-                        {% endfor %} 
-                    </p>
+
+
+                    {% if study.tags.all %}
+
+                        <div class="study-tags">
+
+                            {% for tag in study.tags.all %}
+
+                                <span class="tag-chip">
+                                    {{ tag }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
 
 
                     <div class="study-actions">
@@ -535,15 +757,20 @@
 
                 </article>
 
+
             {% empty %}
 
                 <div class="card empty-card">
-                    <span class="empty-rabbit">🐇</span>
+
+                    <span class="empty-rabbit">
+                        🐇
+                    </span>
 
                     <p>
                         まだ学習記録がないよ！<br>
                         今日の学びをひとつ登録してみよう。
                     </p>
+
                 </div>
 
             {% endfor %}

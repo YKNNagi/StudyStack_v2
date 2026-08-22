@@ -42,16 +42,16 @@
 
         .update-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 540px;
             padding: 24px;
 
             animation: fadeUp 0.7s ease-out;
         }
 
         .update-card {
-            padding: 38px 34px;
+            padding: 40px 36px;
 
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
 
             border: 1px solid rgba(235, 215, 225, 0.85);
             border-radius: 26px;
@@ -62,9 +62,13 @@
             backdrop-filter: blur(8px);
         }
 
+        /* =========================
+           タイトル
+        ========================= */
+
         .title-area {
-            text-align: center;
             margin-bottom: 30px;
+            text-align: center;
         }
 
         .rabbit {
@@ -91,7 +95,15 @@
             font-size: 13px;
         }
 
-        form label {
+        /* =========================
+           フォーム共通
+        ========================= */
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
             display: block;
 
             margin-bottom: 8px;
@@ -101,7 +113,11 @@
             font-weight: 600;
         }
 
-        form input {
+        /* =========================
+           学習内容
+        ========================= */
+
+        .content-wrapper input {
             width: 100%;
 
             padding: 12px 14px;
@@ -122,7 +138,7 @@
                 transform 0.2s ease;
         }
 
-        form input:focus {
+        .content-wrapper input:focus {
             border-color: #d7b7c9;
 
             box-shadow:
@@ -131,8 +147,60 @@
             transform: translateY(-1px);
         }
 
+        /* =========================
+           タグ
+        ========================= */
+
+        .tag-wrapper select {
+            width: 100%;
+            min-height: 120px;
+
+            padding: 10px 12px;
+
+            color: #665e69;
+            font-size: 13px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #fffefe,
+                    #fff8fb
+                );
+
+            border: 1px solid #e4d7e3;
+            border-radius: 13px;
+
+            outline: none;
+
+            box-shadow:
+                inset 0 1px 3px rgba(145, 115, 140, 0.05);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .tag-wrapper select:focus {
+            border-color: #ccb5dd;
+
+            box-shadow:
+                0 0 0 4px rgba(203, 185, 229, 0.18);
+        }
+
+        .tag-help {
+            margin: 7px 2px 0;
+
+            color: #b0a4b2;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           エラー
+        ========================= */
+
         .form-error {
-            margin-top: 12px;
+            margin-top: 10px;
 
             color: #b76e79;
             font-size: 12px;
@@ -149,10 +217,14 @@
             padding: 9px 14px 9px 30px;
         }
 
+        /* =========================
+           更新ボタン
+        ========================= */
+
         .update-button {
             width: 100%;
 
-            margin-top: 20px;
+            margin-top: 4px;
             padding: 13px 18px;
 
             color: white;
@@ -191,10 +263,14 @@
             transform: scale(0.98);
         }
 
+        /* =========================
+           戻る
+        ========================= */
+
         .back-link {
             display: block;
 
-            margin-top: 18px;
+            margin-top: 20px;
 
             text-align: center;
             text-decoration: none;
@@ -212,6 +288,10 @@
             transform: translateY(-1px);
         }
 
+        /* =========================
+           アニメーション
+        ========================= */
+
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -225,7 +305,8 @@
         }
 
         @keyframes rabbitFloat {
-            0%, 100% {
+            0%,
+            100% {
                 transform: translateY(0);
             }
 
@@ -246,6 +327,10 @@
             }
         }
 
+        /* =========================
+           スマホ
+        ========================= */
+
         @media (max-width: 520px) {
             .update-container {
                 padding: 16px;
@@ -253,6 +338,10 @@
 
             .update-card {
                 padding: 32px 24px;
+            }
+
+            .tag-wrapper select {
+                min-height: 105px;
             }
         }
     </style>
@@ -265,45 +354,80 @@
         <section class="update-card">
 
             <div class="title-area">
-                <div class="rabbit">🐇</div>
 
-                <h1>学習記録を編集</h1>
+                <div class="rabbit">
+                    🐇
+                </div>
+
+                <h1>
+                    学習記録を編集
+                </h1>
 
                 <p class="subtitle">
                     学びの記録を、ちょっと整えよう。
                 </p>
+
             </div>
+
 
             <form method="POST">
                 {% csrf_token %}
 
-                <label>学習内容</label>
+                <!-- 学習内容 -->
+                <div class="form-group content-wrapper">
 
-                {{ form.content }}
+                    <label
+                        class="form-label"
+                        for="{{ form.content.id_for_label }}"
+                    >
+                        学習内容
+                    </label>
 
-                {% if form.content.errors %}
-                    <div class="form-error">
-                        {{ form.content.errors }}
-                    </div>
-                {% endif %}
+                    {{ form.content }}
 
-                <label>タグ</label>
+                    {% if form.content.errors %}
+                        <div class="form-error">
+                            {{ form.content.errors }}
+                        </div>
+                    {% endif %}
 
-                {{ form.tags }}
-
-                {% if form.tags.errors %}
-                <div class="form-error">
-                {{ form.tags.errors }}
                 </div>
-                
-                {% endif %}
+
+
+                <!-- タグ -->
+                <div class="form-group tag-wrapper">
+
+                    <label
+                        class="form-label"
+                        for="{{ form.tags.id_for_label }}"
+                    >
+                        タグ
+                    </label>
+
+                    {{ form.tags }}
+
+                    <p class="tag-help">
+                        Ctrlキーを押しながら最大2つまで選べます。
+                    </p>
+
+                    {% if form.tags.errors %}
+                        <div class="form-error">
+                            {{ form.tags.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
                 <button
                     class="update-button"
                     type="submit"
                 >
                     更新する
                 </button>
+
             </form>
+
 
             <a
                 class="back-link"
