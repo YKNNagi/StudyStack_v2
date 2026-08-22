@@ -287,6 +287,16 @@
                     </div>
                 {% endif %}
 
+                <label>タグ</label>
+
+                {{ form.tags }}
+
+                {% if form.tags.errors %}
+                <div class="form-error">
+                {{ form.tags.errors }}
+                </div>
+                
+                {% endif %}
                 <button
                     class="update-button"
                     type="submit"
