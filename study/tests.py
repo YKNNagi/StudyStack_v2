@@ -3,6 +3,7 @@ from .models import Study
 from django.contrib.auth import get_user_model
 from .forms import StudyForm
 from django.urls import reverse
+from .models import Study, Tag
 
 
 class StudyFormTest(TestCase):
@@ -40,6 +41,36 @@ class StudyFormTest(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertIn("content", form.errors)
+
+    # タグ2個ならStudyFormのバリデーションを通過することを確認
+    def test_two_tags_are_valid(self):
+        tag1 = Tag.objects.create(name="Python")
+        tag2 = Tag.objects.create(name="Django")
+
+        form = StudyForm(
+            data={
+                "content": "PythonとDjangoを勉強する",
+                "tags": [tag1.id, tag2.id],
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+
+    # タグ3個ならStudyFormのバリデーションエラーになることを確認
+    def test_three_tags_are_invalid(self):
+        tag1 = Tag.objects.create(name="Python")
+        tag2 = Tag.objects.create(name="Django")
+        tag3 = Tag.objects.create(name="AWS")
+        
+        form = StudyForm(
+            data={
+                "content": "PythonとDjangoを勉強する",
+                "tags": [tag1.id, tag2.id , tag3.id],
+            }
+        )
+        
+        self.assertFalse(form.is_valid())
+        self.assertIn("tags", form.errors)
 
 
 class StudyModelTest(TestCase):
@@ -108,6 +139,21 @@ class StudyModelTest(TestCase):
 
         self.assertEqual(study.content, "Pythonを勉強する")
 
+    # Studyにタグを追加し、関連が正しく保存されることを確認
+    def test_add_tags_to_study(self):
+        study = Study.objects.create(
+            content="Pythonを勉強する",
+            user=self.user
+        )
+
+        tag1 = Tag.objects.create(name="Python")
+        tag2 = Tag.objects.create(name="Django")
+
+        study.tags.add(tag1, tag2)
+
+        self.assertEqual(study.tags.count(), 2)
+        self.assertIn(tag1, study.tags.all())
+        self.assertIn(tag2, study.tags.all())
 
 class StudyViewTest(TestCase):
 
