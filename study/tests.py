@@ -1,5 +1,4 @@
 from django.test import TestCase
-from .models import Study
 from django.contrib.auth import get_user_model
 from .forms import StudyForm
 from django.urls import reverse
@@ -364,6 +363,30 @@ class StudyViewTest(TestCase):
 
         self.assertEqual(study.user, self.user)
 
+    # DashboardからStudyを作成したとき、選択したタグが正しく紐づくことを確認
+    def test_create_study_with_tags(self):
+        tag1 = Tag.objects.create(name="Python")
+        tag2 = Tag.objects.create(name="Django")
+
+        self.client.login(
+                username="testuser",
+                password="testpass"
+        )
+        response = self.client.post(
+            reverse("dashboard"),
+            data={
+                "content": "PythonとDjangoを勉強する",
+                "tags": [tag1.id, tag2.id],
+            }
+        )
+
+        study = Study.objects.get(
+            content="PythonとDjangoを勉強する"
+        )
+
+        self.assertEqual(Study.objects.count(), 1)
+        self.assertIn(tag1, study.tags.all())
+        self.assertIn(tag2, study.tags.all())
 
     # 自分のStudyならUpdateできる
     def test_can_update_own_study(self):
@@ -390,6 +413,38 @@ class StudyViewTest(TestCase):
             study.content,
             "Djangoを勉強する"
         )
+
+    # 自分のStudyならタグを更新できることを確認
+    def test_can_update_own_study_tags(self):
+        tag1 = Tag.objects.create(name="Python")
+        tag2 = Tag.objects.create(name="Django")
+        tag3 = Tag.objects.create(name="AWS")
+
+        study = Study.objects.create(
+            content="Pythonを勉強する",
+            user=self.user
+        )
+
+        study.tags.add(tag1, tag2)
+
+        self.client.login(
+            username="testuser",
+            password="testpass"
+        )
+
+        response = self.client.post(
+            reverse("update", args=[study.id]),
+            data={
+                "content": "Pythonを勉強する",
+                "tags": [tag1.id, tag3.id],
+            }
+        )
+
+        study.refresh_from_db()
+
+        self.assertIn(tag1, study.tags.all())
+        self.assertIn(tag3, study.tags.all())
+        self.assertNotIn(tag2, study.tags.all())
 
     # 自分のStudyならDeleteできる
     def test_can_delete_own_study(self):
