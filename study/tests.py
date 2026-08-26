@@ -292,6 +292,39 @@ class StudyViewTest(TestCase):
             "Javaを勉強する"
         )
 
+    # DashboardにStudyへ紐づくタグが表示されることを確認
+    def test_dashboard_shows_study_tags(self):
+        tag1 = Tag.objects.create(name="Python")
+        tag2 = Tag.objects.create(name="Django")
+
+        study = Study.objects.create(
+            content="APPを作成する",
+            user=self.user
+        )
+
+        study.tags.add(tag1, tag2)
+
+        self.client.login(
+            username="testuser",
+            password="testpass"
+        )
+
+        response = self.client.get(
+            reverse("dashboard")
+        )
+
+        self.assertContains(
+            response,
+            "Python"
+        )
+
+        self.assertContains(
+            response,
+            "Django"
+        )
+
+
+
     # 他ユーザーのStudyは更新されない
     def test_cannot_update_other_users_study(self):
         other_study = Study.objects.create(
@@ -464,3 +497,71 @@ class StudyViewTest(TestCase):
         )
 
         self.assertEqual(Study.objects.count(), 0)
+
+    # Dashboardから3つのタグを選択した場合、Studyが作成されないことを確認
+    def test_cannot_create_study_with_three_tags(self):
+        tag1 = Tag.objects.create(name="Python")
+        tag2 = Tag.objects.create(name="Django")
+        tag3 = Tag.objects.create(name="AWS")
+
+        self.client.login(
+            username="testuser",
+            password="testpass"
+        )
+
+        response = self.client.post(
+            reverse("dashboard"),
+            data={
+                "content": "PythonとDjangoを勉強する",
+                "tags": [tag1.id, tag2.id, tag3.id],
+            }
+        )
+
+        self.assertEqual(Study.objects.count(), 0)
+
+        self.assertContains(
+            response,
+            "タグは2つまで選択できます。"
+        )
+
+    # 自分のStudyを3つのタグで更新した場合、更新されないことを確認
+    def test_cannot_update_own_study_with_three_tags(self):
+        tag1 = Tag.objects.create(name="Python")
+        tag2 = Tag.objects.create(name="Django")
+        tag3 = Tag.objects.create(name="AWS")
+
+        study = Study.objects.create(
+            content="APPを作成する",
+            user=self.user
+        )
+        
+        study.tags.add(tag1, tag2)
+
+        self.client.login(
+            username="testuser",
+            password="testpass"
+        )
+
+        response = self.client.post(
+            reverse("update", args=[study.id]),
+            data={
+                "content": "DBを作成する",
+                "tags": [tag1.id, tag2.id, tag3.id],
+                }
+        )
+        
+        study.refresh_from_db()
+
+        self.assertIn(tag1, study.tags.all())
+        self.assertIn(tag2, study.tags.all())
+        self.assertNotIn(tag3, study.tags.all())
+        self.assertEqual(
+            study.content,
+            "APPを作成する"
+        )
+
+        self.assertContains(
+            response,
+            "タグは2つまで選択できます。"
+        )
+
