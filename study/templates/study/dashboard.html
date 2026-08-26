@@ -694,6 +694,11 @@
 
         </section>
 
+        <a href="{% url 'dashboard' %}">すべて</a>
+        {% for tag in tags %}
+            <a href="?tag={{ tag.id }}">{{ tag }}</a>
+        {% endfor %}
+
 
         <!-- =========================
              学習記録一覧

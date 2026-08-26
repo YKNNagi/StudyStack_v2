@@ -576,3 +576,76 @@ class StudyViewTest(TestCase):
             self.assertTrue(
                 Study.objects.filter(id=other_study.id).exists()
             )
+
+    # 指定したタグで自分のStudyだけが絞り込まれて表示されることを確認
+    def test_dashboard_filters_own_studies_by_tag(self):
+            tag1 = Tag.objects.create(name="Python")
+
+            study1 = Study.objects.create(
+                content="Javaを勉強する",
+                user=self.user
+            )
+
+            study2 = Study.objects.create(
+                content="Reactを勉強する",
+                user=self.user
+            )
+
+            study1.tags.add(tag1)
+
+            self.client.login(
+                username="testuser",
+                password="testpass"
+            )
+
+            response = self.client.get(
+                reverse("dashboard"),
+                 {"tag": tag1.id}
+            )
+
+            self.assertContains(
+                response,
+                "Javaを勉強する"
+            )
+
+            self.assertNotContains(
+                response,
+                "Reactを勉強する"
+            )
+
+    # 指定したタグで絞り込んだ場合、他ユーザーのStudyが表示されないことを確認
+    def test_dashboard_tag_filter_excludes_other_users_studies(self):
+            tag1 = Tag.objects.create(name="Python")
+
+            study1 = Study.objects.create(
+                content="Javaを勉強する",
+                user=self.user
+            )
+
+            study2 = Study.objects.create(
+                content="Reactを勉強する",
+                user=self.other_user
+            )
+
+            study1.tags.add(tag1)
+            study2.tags.add(tag1)
+
+            self.client.login(
+                username="testuser",
+                password="testpass"
+            )
+
+            response = self.client.get(
+                reverse("dashboard"),
+                {"tag": tag1.id}
+            )
+
+            self.assertContains(
+            response,
+            "Javaを勉強する"
+            )
+
+            self.assertNotContains(
+            response,
+            "Reactを勉強する"
+            )

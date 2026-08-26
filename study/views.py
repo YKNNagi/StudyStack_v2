@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Study
+from .models import Study, Tag
 from .forms import StudyForm
 from .forms import SignupForm
 
@@ -50,6 +50,15 @@ def dashboard(request):
         user=request.user
     ).order_by("-created_at")
 
+    selected_tag = request.GET.get("tag")
+
+    tags = Tag.objects.all()
+
+    if selected_tag:
+        studies = studies.filter(
+        tags__id=selected_tag
+    )
+
     if request.method == "POST":
         form = StudyForm(request.POST)
 
@@ -66,7 +75,8 @@ def dashboard(request):
 
     context = {
         "studies" : studies,
-        "form" : form
+        "form" : form,
+        "tags" : tags
     }
 
     return render(request, "study/dashboard.html", context)
