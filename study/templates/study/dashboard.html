@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -251,6 +252,24 @@
 
             box-shadow:
                 0 0 0 4px rgba(203, 185, 229, 0.18);
+        }
+
+        /* =========================
+           選択中タグ
+        ========================= */
+
+        #selected-tags {
+            grid-column: 1 / 3;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+
+            min-height: 29px;
+            margin-top: 8px;
+        }
+
+        #selected-tags .tag-chip {
+            animation: tagAppear 0.2s ease-out;
         }
 
         .tag-help {
@@ -508,6 +527,40 @@
         }
 
         /* =========================
+           タグフィルター
+        ========================= */
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            margin: 20px 0 14px;
+        }
+
+        .tag-filter a {
+            padding: 7px 13px;
+
+            border: 1px solid #ead6e8;
+            border-radius: 999px;
+
+            background: #fff7fb;
+
+            color: #8f7189;
+            font-size: 13px;
+            font-weight: 600;
+
+            text-decoration: none;
+            transition: transform 0.2s ease;
+            background: 0.2s ease;
+        }
+
+        .tag-filter a:hover {
+            transform: translateY(-1px);
+            background: #fff0f8;
+        }
+
+        /* =========================
            アニメーション
         ========================= */
 
@@ -531,6 +584,18 @@
 
             50% {
                 transform: translateY(-5px);
+            }
+        }
+
+        @keyframes tagAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-3px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -673,6 +738,8 @@
 
                     </div>
 
+                    <div id="selected-tags"></div>
+
 
                     <button
                         class="add-button"
@@ -694,11 +761,17 @@
 
         </section>
 
-        <a href="{% url 'dashboard' %}">すべて</a>
-        {% for tag in tags %}
-            <a href="?tag={{ tag.id }}">{{ tag }}</a>
-        {% endfor %}
+        <div class="tag-filter">
 
+            <a href="?">すべて</a>
+
+            {% for tag in tags %}
+                <a href="?tag={{ tag.id }}">
+                    # {{ tag.name }}
+                </a>
+            {% endfor %}
+
+        </div>
 
         <!-- =========================
              学習記録一覧
@@ -784,5 +857,6 @@
 
     </main>
 
+    <script src="{% static 'study/dashboard.js' %}"></script>
 </body>
 </html>

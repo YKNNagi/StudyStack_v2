@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -193,6 +194,32 @@
             color: #b0a4b2;
             font-size: 11px;
             line-height: 1.5;
+        }
+
+        /* =========================
+        選択中タグ
+        ========================= */
+
+        #selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+
+            min-height: 29px;
+            margin-top: 8px;
+        }
+
+        #selected-tags .tag-chip {
+            padding: 6px 10px;
+
+            color: #8f7189;
+            font-size: 12px;
+            font-weight: 600;
+
+            background: #fff7fb;
+
+            border: 1px solid #ead6e8;
+            border-radius: 999px;
         }
 
         /* =========================
@@ -406,6 +433,8 @@
 
                     {{ form.tags }}
 
+                    <div id="selected-tags"></div>
+
                     <p class="tag-help">
                         Ctrlキーを押しながら最大2つまで選べます。
                     </p>
@@ -439,6 +468,6 @@
         </section>
 
     </main>
-
+    <script src="{% static 'study/dashboard.js' %}"></script>
 </body>
 </html>
